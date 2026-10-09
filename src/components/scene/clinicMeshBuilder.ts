@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { createDoctorAvatar, createReceptionistAvatar } from './characterBuilder';
+import { createDoctorAvatar, createReceptionistAvatar, ClinicStaffCharacter } from './characterBuilder';
 
 export interface InteractiveZoneObject {
   mesh: THREE.Object3D;
@@ -13,6 +13,8 @@ export interface ClinicSceneData {
   interactiveObjects: InteractiveZoneObject[];
   mainEntranceDoor: THREE.Group;
   cabinDoor: THREE.Group;
+  doctorStaff: ClinicStaffCharacter;
+  receptionistStaff: ClinicStaffCharacter;
 }
 
 // Procedural Canvas Textures
@@ -463,11 +465,11 @@ export function buildClinicScene(): ClinicSceneData {
   recChair.rotation.y = Math.PI;
   receptionGroup.add(recChair);
 
-  // Staff Avatar (Receptionist) seated behind desk
+  // Staff Avatar (Receptionist) seated behind desk with AnimationMixer
   const receptionist = createReceptionistAvatar();
-  receptionist.position.set(0.5, 0, -0.75);
-  receptionist.rotation.y = Math.PI;
-  receptionGroup.add(receptionist);
+  receptionist.group.position.set(0.5, 0, -0.75);
+  receptionist.group.rotation.y = Math.PI;
+  receptionGroup.add(receptionist.group);
 
   root.add(receptionGroup);
 
@@ -685,11 +687,11 @@ export function buildClinicScene(): ClinicSceneData {
   mainDoctorChair.rotation.y = 0; // Facing desk forward
   deskGroup.add(mainDoctorChair);
 
-  // Seated Doctor Avatar
+  // Seated Doctor Avatar with AnimationMixer
   const doctorAvatar = createDoctorAvatar();
-  doctorAvatar.position.set(0, 0, -1.2);
-  doctorAvatar.rotation.y = 0;
-  deskGroup.add(doctorAvatar);
+  doctorAvatar.group.position.set(0, 0, -1.2);
+  doctorAvatar.group.rotation.y = 0;
+  deskGroup.add(doctorAvatar.group);
 
   // 2. SECONDARY DOCTOR / ASSISTANT CHAIR (Beside main desk)
   const assistantChair = createOfficeChair(0x334155, false);
@@ -844,6 +846,8 @@ export function buildClinicScene(): ClinicSceneData {
     interactiveObjects,
     mainEntranceDoor,
     cabinDoor,
+    doctorStaff: doctorAvatar,
+    receptionistStaff: receptionist,
   };
 }
 

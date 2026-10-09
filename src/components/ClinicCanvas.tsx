@@ -4,7 +4,12 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import gsap from 'gsap';
 import { ClinicZoneId, CameraViewMode } from '../types/clinic';
 import { buildClinicScene, InteractiveZoneObject } from './scene/clinicMeshBuilder';
-import { createVisitorAvatar, updateCharacterAnimation, AnimatedCharacter } from './scene/characterBuilder';
+import {
+  createVisitorAvatar,
+  updateCharacterMixers,
+  AnimatedCharacter,
+  ClinicStaffCharacter,
+} from './scene/characterBuilder';
 import { findPath, getClosestNode, WAYPOINT_GRAPH } from './scene/pathfinder';
 import { CLINIC_ZONES } from '../data/clinicData';
 import { soundFx } from '../utils/audio';
@@ -36,6 +41,8 @@ export const ClinicCanvas: React.FC<ClinicCanvasProps> = ({
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
   const visitorRef = useRef<AnimatedCharacter | null>(null);
+  const doctorStaffRef = useRef<ClinicStaffCharacter | null>(null);
+  const receptionistStaffRef = useRef<ClinicStaffCharacter | null>(null);
   const interactiveObjectsRef = useRef<InteractiveZoneObject[]>([]);
   const mainDoorRef = useRef<THREE.Group | null>(null);
   const cabinDoorRef = useRef<THREE.Group | null>(null);
@@ -185,6 +192,23 @@ export const ClinicCanvas: React.FC<ClinicCanvasProps> = ({
         }
       },
       onComplete: () => {
+        // Smoothly orient visitor to zone interaction focal point
+        if (visitorRef.current) {
+          let finalYaw = visitorRef.current.group.rotation.y;
+          if (destZone === 'welcome') finalYaw = Math.PI;
+          else if (destZone === 'reception') finalYaw = -Math.PI / 1.7;
+          else if (destZone === 'waiting_chairs') finalYaw = Math.PI / 2;
+          else if (destZone === 'medicine_cabin') finalYaw = -Math.PI / 2;
+          else if (destZone === 'doctor_desk') finalYaw = 0;
+          else if (destZone === 'examination_bed') finalYaw = 0.2;
+
+          gsap.to(visitorRef.current.group.rotation, {
+            y: finalYaw,
+            duration: 0.45,
+            ease: 'power2.out',
+          });
+        }
+
         onWalkingStateChange(false);
         soundFx.playArrival();
         onArrivedAtZone(destZone);
@@ -345,6 +369,8 @@ export const ClinicCanvas: React.FC<ClinicCanvasProps> = ({
     interactiveObjectsRef.current = clinicData.interactiveObjects;
     mainDoorRef.current = clinicData.mainEntranceDoor;
     cabinDoorRef.current = clinicData.cabinDoor;
+    doctorStaffRef.current = clinicData.doctorStaff;
+    receptionistStaffRef.current = clinicData.receptionistStaff;
 
     // -------------------------------------------------------------
     // VISITOR AVATAR (Starts at "WELCOME" mat at [0, 0, 9.8])
@@ -459,15 +485,19 @@ export const ClinicCanvas: React.FC<ClinicCanvasProps> = ({
       // Update Controls
       controls.update();
 
-      // Update avatar walk / idle animation
-      if (visitorRef.current) {
-        updateCharacterAnimation(visitorRef.current, isWalking, delta);
+      // Update character Three.js AnimationMixers (breathing, looking around, typing, and walking)
+      updateCharacterMixers(
+        visitorRef.current,
+        doctorStaffRef.current,
+        receptionistStaffRef.current,
+        isWalking,
+        delta
+      );
 
-        // Follow camera mode tracking
-        if (cameraMode === 'follow') {
-          const charPos = visitorRef.current.group.position;
-          controls.target.lerp(new THREE.Vector3(charPos.x, charPos.y + 0.8, charPos.z), 0.05);
-        }
+      // Follow camera mode tracking
+      if (visitorRef.current && cameraMode === 'follow') {
+        const charPos = visitorRef.current.group.position;
+        controls.target.lerp(new THREE.Vector3(charPos.x, charPos.y + 0.8, charPos.z), 0.05);
       }
 
       renderer.render(scene, camera);
