@@ -1,0 +1,7 @@
+{
+  "name": "MediClinic 3D - Interactive Clinic Navigator",
+  "description": "Interactive low-poly 3D medical clinic floor plan with real-time waypoint navigation, visitor avatar, and isometric perspective.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+

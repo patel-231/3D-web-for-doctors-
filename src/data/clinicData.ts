@@ -1,0 +1,118 @@
+import { ClinicZoneId, ZoneInfo } from '../types/clinic';
+
+export const CLINIC_ZONES: Record<ClinicZoneId, ZoneInfo> = {
+  welcome: {
+    id: 'welcome',
+    title: 'Clinic Entrance & Welcome Mat',
+    subtitle: 'Bottom Center Zone',
+    zoneArea: 'Entrance Foyer',
+    description: 'Clean medical clinic threshold featuring the "WELCOME" antimicrobial floor mat, sanitization station, and the main entrance door opening inward into the reception lobby.',
+    features: [
+      'Embossed "WELCOME" non-slip antimicrobial mat',
+      'Inward-swinging frosted glass main entrance door',
+      'Step-free accessible threshold with clear visibility',
+      'Contactless hand sanitization station',
+    ],
+    buttonLabel: 'Welcome Entrance',
+    icon: 'DoorOpen',
+    cameraPreset: {
+      pos: [0, 8, 16],
+      target: [0, 0.5, 9],
+    },
+  },
+  reception: {
+    id: 'reception',
+    title: 'Reception & Patient Check-In',
+    subtitle: 'Waiting Room - Left Section',
+    zoneArea: 'Bottom Zone (Left)',
+    description: 'Contemporary L-shaped reception counter with light oak trim, front transaction shield, Electronic Health Records (EHR) computer station, and receptionist staff avatar ready to assist visitors.',
+    features: [
+      'L-shaped reception desk with privacy shielding',
+      'Ergonomic receptionist swivel chair & staff avatar',
+      'Patient check-in computer terminal & keyboard',
+      'Queue token dispensing & appointment intake',
+    ],
+    buttonLabel: 'Go to Reception',
+    icon: 'UserCheck',
+    cameraPreset: {
+      pos: [-6, 6, 12],
+      target: [-4, 0.9, 7],
+    },
+  },
+  waiting_chairs: {
+    id: 'waiting_chairs',
+    title: 'Patient Waiting Lounge',
+    subtitle: 'Waiting Room - Right Section',
+    zoneArea: 'Bottom Zone (Right)',
+    description: 'Quiet, comfortable waiting area with 4 patient chairs placed along the wall and corner, alongside an indoor plant, water dispenser cooler, and informational health monitor.',
+    features: [
+      '4 comfortable patient chairs with medical cyan padding',
+      'Chilled & hot filtered water dispenser',
+      'Corner magazine and health brochure table',
+      'Potted indoor air-purifying plant & live queue monitor',
+    ],
+    buttonLabel: 'Waiting Lounge',
+    icon: 'Armchair',
+    cameraPreset: {
+      pos: [8, 6, 12],
+      target: [6, 0.6, 7],
+    },
+  },
+  medicine_cabin: {
+    id: 'medicine_cabin',
+    title: 'Medicine Cabin & Pharmacy',
+    subtitle: 'Middle Zone - Left Side',
+    zoneArea: 'Middle Zone',
+    description: 'Pharmaceutical inventory holding three 3x1.5 shelves loaded with antibiotics, vitamins, prescription stock, amber dropper bottles, and first aid supplies. Connected to the open hallway on the right.',
+    features: [
+      'Three 3x1.5 ft multi-tier pharmacy stock shelves',
+      'Low-poly medicine boxes, vials, and amber bottles',
+      'Categorized prescription pull-out storage bins',
+      'Prescription verification and dispensing station',
+    ],
+    buttonLabel: 'Get Medicines',
+    icon: 'Pill',
+    cameraPreset: {
+      pos: [-6, 7, 5],
+      target: [-3, 1.0, 0],
+    },
+  },
+  doctor_desk: {
+    id: 'doctor_desk',
+    title: "Doctor's Consultation Cabin",
+    subtitle: 'Top Zone - Center-Left Desk',
+    zoneArea: 'Top Zone (Doctor Cabin)',
+    description: "Doctor's consultation desk centered on a large executive table with the seated doctor avatar, high-back leather chair, secondary assistant chair, and patient visitor chair across the desk with EHR monitor.",
+    features: [
+      'Large natural wood executive consultation desk',
+      'Main high-back executive chair with seated Doctor avatar',
+      'Secondary assistant/intern chair & visitor patient chair',
+      'Active patient ECG/vitals display, stethoscope & RX pad',
+    ],
+    buttonLabel: 'Consult Doctor',
+    icon: 'Stethoscope',
+    cameraPreset: {
+      pos: [-4, 6, -2],
+      target: [-2.2, 0.9, -6.8],
+    },
+  },
+  examination_bed: {
+    id: 'examination_bed',
+    title: 'Clinical Examination Table',
+    subtitle: 'Top Zone - Top-Right Corner',
+    zoneArea: 'Top Zone (Examination Area)',
+    description: 'Medical examination bed situated in the top-right corner against the wall, featuring an elevated headrest, mint sanitary mattress, step stool, privacy curtain rail, and wall-mounted diagnostic vitals kit.',
+    features: [
+      'Adjustable examination bed with mint medical vinyl',
+      'Hygiene sanitary paper roll & ergonomic pillow',
+      'Patient two-step chrome climbing stool',
+      'Ceiling privacy curtain rail, IV drip stand & exam lamp',
+    ],
+    buttonLabel: 'Examination Bed',
+    icon: 'Bed',
+    cameraPreset: {
+      pos: [6, 6, -3],
+      target: [6.0, 0.9, -7.5],
+    },
+  },
+};
